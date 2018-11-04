@@ -10,8 +10,7 @@ import ViewSong from '@/components/ViewSong/Index'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/register',
       name: 'register',
       component: Register

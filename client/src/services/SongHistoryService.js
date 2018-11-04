@@ -1,12 +1,12 @@
 import Api from '@/services/Api'
 
 export default {
-  index (params) {
+  index(params) {
     return Api().get('histories', {
       params: params
     })
   },
-  post (history) {
+  post(history) {
     return Api().post('histories', history)
   }
 }
