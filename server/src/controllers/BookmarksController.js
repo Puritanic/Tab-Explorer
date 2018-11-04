@@ -1,92 +1,92 @@
 const {
 	Bookmark,
-	Song
-} = require('../models')
-const _ = require('lodash')
+	Song,
+} = require('../models');
+const _ = require('lodash');
 
 module.exports = {
-	async index(req, res) {
+	async index (req, res) {
 		try {
-			const userId = req.user.id
+			const userId = req.user.id;
 			const {
-				songId
-			} = req.query
+				songId,
+			} = req.query;
 			const where = {
-				UserId: userId
-			}
+				UserId: userId,
+			};
 			if (songId) {
-				where.SongId = songId
+				where.SongId = songId;
 			}
 			const bookmarks = await Bookmark.findAll({
-					where: where,
-					include: [{
-						model: Song
-					}]
-				})
+				where: where,
+				include: [{
+					model: Song,
+				}, ],
+			})
 				.map(bookmark => bookmark.toJSON())
 				.map(bookmark => _.extend({},
 					bookmark.Song,
 					bookmark
-				))
-			res.send(bookmarks)
+				));
+			res.send(bookmarks);
 		} catch (err) {
 			res.status(500).send({
-				error: 'an error has occured trying to fetch the bookmark'
-			})
+				error: 'an error has occured trying to fetch the bookmark',
+			});
 		}
 	},
-	async post(req, res) {
+	async post (req, res) {
 		try {
-			const userId = req.user.id
+			const userId = req.user.id;
 			const {
-				songId
-			} = req.body
+				songId,
+			} = req.body;
 			const bookmark = await Bookmark.findOne({
 				where: {
 					SongId: songId,
-					UserId: userId
-				}
-			})
+					UserId: userId,
+				},
+			});
 			if (bookmark) {
 				return res.status(400).send({
-					error: 'you already have this set as a bookmark'
-				})
+					error: 'you already have this set as a bookmark',
+				});
 			}
 			const newBookmark = await Bookmark.create({
 				SongId: songId,
-				UserId: userId
-			})
-			res.send(newBookmark)
+				UserId: userId,
+			});
+			res.send(newBookmark);
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 			res.status(500).send({
-				error: 'an error has occured trying to create the bookmark'
-			})
+				error: 'an error has occured trying to create the bookmark',
+			});
 		}
 	},
-	async remove(req, res) {
+	async remove (req, res) {
 		try {
-			const userId = req.user.id
+			const userId = req.user.id;
 			const {
-				bookmarkId
-			} = req.params
+				bookmarkId,
+			} = req.params;
 			const bookmark = await Bookmark.findOne({
 				where: {
 					id: bookmarkId,
-					UserId: userId
-				}
-			})
+					UserId: userId,
+				},
+			});
 			if (!bookmark) {
 				return res.status(403).send({
-					error: 'you do not have access to this bookmark'
-				})
+					error: 'you do not have access to this bookmark',
+				});
 			}
-			await bookmark.destroy()
-			res.send(bookmark)
+			await bookmark.destroy();
+			res.send(bookmark);
 		} catch (err) {
 			res.status(500).send({
-				error: 'an error has occured trying to delete the bookmark'
-			})
+				error: 'an error has occured trying to delete the bookmark',
+			});
 		}
-	}
-}
+	},
+};

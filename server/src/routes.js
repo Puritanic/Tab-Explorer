@@ -1,41 +1,41 @@
-const AuthenticationController = require('./controllers/AuthenticationController')
-const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
-const SongsController = require('./controllers/SongsController')
-const BookmarksController = require('./controllers/BookmarksController')
-const HistoriesController = require('./controllers/HistoriesController')
+const AuthenticationController = require('./controllers/AuthenticationController');
+const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
+const SongsController = require('./controllers/SongsController');
+const BookmarksController = require('./controllers/BookmarksController');
+const HistoriesController = require('./controllers/HistoriesController');
 
-const isAuthenticated = require('./policies/isAuthenticated')
+const isAuthenticated = require('./policies/isAuthenticated');
 
 module.exports = (app) => {
 	app.post('/register',
 		AuthenticationControllerPolicy.register,
-		AuthenticationController.register)
+		AuthenticationController.register);
 	app.post('/login',
-		AuthenticationController.login)
+		AuthenticationController.login);
 
 	app.get('/songs',
-		SongsController.index)
+		SongsController.index);
 	app.get('/songs/:songId',
-		SongsController.show)
+		SongsController.show);
 	app.put('/songs/:songId',
-		SongsController.put)
+		SongsController.put);
 	app.post('/songs',
-		SongsController.post)
+		SongsController.post);
 
 	app.get('/bookmarks',
 		isAuthenticated,
-		BookmarksController.index)
+		BookmarksController.index);
 	app.post('/bookmarks',
 		isAuthenticated,
-		BookmarksController.post)
+		BookmarksController.post);
 	app.delete('/bookmarks/:bookmarkId',
 		isAuthenticated,
-		BookmarksController.remove)
+		BookmarksController.remove);
 
 	app.get('/histories',
 		isAuthenticated,
-		HistoriesController.index)
+		HistoriesController.index);
 	app.post('/histories',
 		isAuthenticated,
-		HistoriesController.post)
-}
+		HistoriesController.post);
+};
